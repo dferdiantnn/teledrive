@@ -47,3 +47,35 @@ If you like this project small contribution would be appreciated [Paypal](https:
    <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=tgdrive/teldrive&type=Date" />
  </picture>
 </a>
+
+---
+
+## 🚀 Panduan Deployment (Railway & Docker Manual)
+
+### 1. Deploy ke Railway (Paling Mudah)
+1. Buka dashboard [Railway.app](https://railway.app).
+2. Klik **New Project** > **Deploy from GitHub repo** > pilih repo ini (`teledrive`).
+3. Tambahkan Database PostgreSQL:
+   - Klik **+ New** di dalam canvas project > pilih **Database** > pilih **Add PostgreSQL**.
+4. Di service **teledrive**, masuk ke tab **Variables** dan tambahkan:
+   - `DATABASE_URL`: `${{Postgres.DATABASE_URL}}` *(atau biarkan otomatis jika sudah terhubung)*
+   - `TELDRIVE_JWT_SECRET`: *(Isi dengan 32 karakter string acak)*
+   - `TELDRIVE_JWT_ALLOWED_USERS`: `username_telegram_kamu` *(tanpa tanda @)*
+   - `TELDRIVE_TG_UPLOADS_ENCRYPTION_KEY`: *(Isi dengan string acak untuk enkripsi)*
+5. Masuk ke tab **Settings** di service teledrive:
+   - Di bagian **Networking**, klik **Generate Domain** untuk mendapatkan URL web public HTTPS kamu (misal: `teledrive-production.up.railway.app`).
+6. Buka URL tersebut, lalu login menggunakan akun Telegram dan ikuti instruksi pengisian API ID & Bot Token saat pertama kali buka.
+
+---
+
+### 2. Jalankan Manual (Lokal Mac / VPS) jika Railway Habis
+Jika kuota atau trial Railway kamu habis, kamu bisa menjalankan seluruh sistem (Database + Teldrive UI) secara mandiri menggunakan **Docker Compose**:
+
+1. Pastikan Docker sudah terinstall di perangkatmu.
+2. Edit file `docker-compose.yml`, sesuaikan variabel:
+   - `TELDRIVE_JWT_ALLOWED_USERS=username_telegram_kamu`
+3. Jalankan perintah:
+   ```bash
+   docker compose up -d
+   ```
+4. Buka browser ke: `http://localhost:8080`.
